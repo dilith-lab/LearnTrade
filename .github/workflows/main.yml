@@ -1,0 +1,31 @@
+on:
+  push:
+    branches:
+      - main
+
+name: 🚀 Production Deploy
+
+jobs:
+  FTP-Deploy-Action:
+    name: FTP-Deploy-Action
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v2
+
+      - name: 📂 Determine changed files
+        id: git-diff
+        run: |
+          git fetch --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+          echo "files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})" >> $GITHUB_ENV
+
+      - name: 📂 FTP-Deploy-Action
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: 191.101.230.168
+          username: u806710652
+          password: ${{ secrets.PROD_FTP_PASSWORD }}
+          server-dir: ems/
+          local-dir: ${{ github.workspace }}/
+          exclude: ${{ steps.git-diff.outputs.files }}
