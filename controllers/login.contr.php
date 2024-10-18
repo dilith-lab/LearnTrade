@@ -13,48 +13,37 @@ class LoginContr extends Login
     # Check if username and password is valid 
     public function checkCredentials($email, $password)
     {
-        $login = new Login;
-        $fetch = $login->verifyCredentials($email, $password);
-        return $fetch;
+        return $this->loginModel->verifyCredentials($email, $password);
     }
 
     # Change password on password change
     public function changePassword($user_id, $password)
     {
-        $login = new Login;
-        $fetch = $login->updatePassword($user_id, $password);
-        return $fetch;
+        return $this->loginModel->updatePassword($user_id, $password);
     }
 
     # Update Account Status on password change
     public function changeVerification($tid)
     {
-        $login = new Login;
-        $fetch = $login->updateVerification($tid);
-        return $fetch;
+        return $this->loginModel->updateVerification($tid);
     }
 
     # Check if email address exist 
     public function checkEmail($email)
     {
-        $login = new Login;
-        $fetch = $login->verifyEmail($email);
-        return $fetch;
+        return $this->loginModel->verifyEmail($email);
     }
 
     # Create new Password reset request
     public function createPasswordResetReq($user_id)
     {
-        $login = new Login;
-        $fetch = $login->newPasswordResetReq($user_id);
-        return $fetch;
+        return $this->loginModel->newPasswordResetReq($user_id);
     }
 
     # Validate if password reset token is valid for a given token
     public function checkUIDToken($token)
     {
-        $login = new Login;
-        $fetch = $login->verifyUIDToken($token);
+        $fetch = $this->loginModel->verifyUIDToken($token);
         #echo "Current Time: " . $current_timestamp = date('Y-m-d H:i:s', time());
         #echo "Expire Time : " . $expire_timestamp = $fetch['expiration_time'];
         $current_timestamp = date('Y-m-d H:i:s', time());

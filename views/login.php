@@ -1,68 +1,89 @@
 <?php
 session_start();
 require_once '../config/config.inc.php';
-/*
-if (isset($_SESSION['UID'])) {
-  if ($_SESSION['status'] == 1) {
-    header('location: index.php');
-  }
-}
-*/
-
 include "../models/db.model.php";
 include "../controllers/login.contr.php";
 
-if (isset($_GET['status_code']) && isset($_GET['message'])) {
-    $status_code = base64_decode($_GET['status_code']);
-    $message = base64_decode($_GET['message']);
+// Function to handle login success
+function handleLoginSuccess($fetch)
+{
+  $_SESSION['user_id'] = $fetch['user_id'];
+  $_SESSION['email'] = $fetch['email'];
+  $_SESSION['first_name'] = $fetch['fname'];
+  $_SESSION['last_name'] = $fetch['lname'];
+  $_SESSION['mobile'] = $fetch['mobile'];
+  $_SESSION['role_id'] = $fetch['role_id'];
+  $_SESSION['role_name'] = $fetch['role_name'];
+  $_SESSION['account_status'] = $fetch['account_status'];
+  $_SESSION['created_at'] = $fetch['created_at'];
+
+  switch ($_SESSION['account_status']) {
+    case 1:
+      header('location: change-password.php');
+      break;
+    case 2:
+      header('location: index.php');
+      break;
+    case 0:
+    default:
+      return [
+        'status_code' => 400,
+        'message' => 'Invalid account status.'
+      ];
+  }
+
+  return [
+    'status_code' => 100,
+    'message' => 'User logged in successfully.'
+  ];
 }
 
-if (isset($_POST['email']) && isset($_POST['password'])) {
-  $email = $_POST['email'];
-  $password = $_POST['password'];
+// Function to handle errors
+function handleError($status_code, $message)
+{
+  return [
+    'status_code' => $status_code,
+    'message' => $message
+  ];
+}
+
+// Display message if passed via GET parameters
+if (isset($_GET['status_code']) && isset($_GET['message'])) {
+  $status_code = base64_decode($_GET['status_code']);
+  $message = base64_decode($_GET['message']);
+}
+
+// Handle login form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $email = $_POST['email'] ?? null;
+  $password = $_POST['password'] ?? null;
   $password_hash = hash('SHA384', $password);
 
-   if (!empty($email) && !empty($password)) {
-
-    $loginModel = new Login; // Instantiate the Login model 
-
-    $loginContr = new LoginContr($loginModel); // Pass the model instance to the controller 
+  if (!empty($email) && !empty($password)) {
+    $loginModel = new Login();  // Instantiate the Login model
+    $loginContr = new LoginContr($loginModel);  // Pass the model instance to the controller
 
     $fetch = $loginContr->checkCredentials($email, $password_hash);
 
     if ($fetch) {
-      $_SESSION['user_id'] = $fetch['user_id'];
-      $_SESSION['email'] = $fetch['email'];
-      $_SESSION['first_name'] = $fetch['fname'];
-      $_SESSION['last_name'] = $fetch['lname'];
-      $_SESSION['mobile'] = $fetch['mobile'];
-      $_SESSION['role_id'] = $fetch['role_id'];
-      $_SESSION['role_name'] = $fetch['role_name'];
-      $_SESSION['account_status'] = $fetch['account_status'];
-      $_SESSION['created_at'] = $fetch['created_at'];
-
-      $status_code = 100;
-      $message = "User logged in successfully.";
-
-      #var_dump($fetch); #or print_r($fetch);
-      if ($_SESSION['account_status'] == 1) {
-        header('location: change-password.php');
-      } else if ($_SESSION['account_status'] == 2) {
-        header('location: index.php');
-      } else if ($_SESSION['account_status'] == 0) {
-        $status_code = 400;
-        $message = "Invaid account";
-      }
+      // Handle successful login
+      $response = handleLoginSuccess($fetch);
     } else {
-      $status_code = 400;
-      $message = "Invaid username or password.";
+      // Handle invalid credentials
+      $response = handleError(400, "Invalid username or password.");
     }
   } else {
-    $status_code = 400;
-    $message = "Username or password cannot be blank.";
+    // Handle missing email or password
+    $response = handleError(400, "Username or password cannot be blank.");
   }
+
+  // Set the status code and message for display
+  $status_code = $response['status_code'];
+  $message = $response['message'];
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -130,11 +151,11 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
             </div>
           </div>
         </form>
-        <?php if(ACC_RECOVERY): ?>
-        <p class="mb-1"><a href="./forgot-password.php">Forgot password</a></p>
+        <?php if (ACC_RECOVERY): ?>
+          <p class="mb-1"><a href="./forgot-password.php">Forgot password</a></p>
         <?php endif; ?>
-        <?php if(ACC_REGISTRATION): ?>
-        <p class="mb-0"><a href="./register.php" class="text-center">Register a new account</a></p>
+        <?php if (ACC_REGISTRATION): ?>
+          <p class="mb-0"><a href="./register.php" class="text-center">Register a new account</a></p>
         <?php endif; ?>
       </div>
       <!-- /.card-body -->

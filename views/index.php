@@ -5,11 +5,6 @@ include "../models/db.model.php";
 # Page Information
 $title = "Dashboard";
 
-# Total Subject Count
-# DocModel = new Doc; // Instantiate the Doc model
-# $DocContr = new DocContr($DocModel); // Pass the model instance to the controller
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

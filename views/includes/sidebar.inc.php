@@ -45,11 +45,29 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-header">CLASS</li>
+                <li class="nav-header">CSE</li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link <?php if ($active_page == 'class') echo 'active';  ?>">
-                        <i class="nav-icon fas fa-school"></i>
-                        <p>View Class</p>
+                    <a href="./quote.php" class="nav-link <?php if ($active_page == 'quote') echo 'active';  ?>">
+                        <i class="nav-icon fas fa-tag"></i>
+                        <p>Quote</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link <?php if ($active_page == 'buy') echo 'active';  ?>">
+                        <i class="nav-icon fas fa-cart-plus"></i>
+                        <p>Buy</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link <?php if ($active_page == 'sell') echo 'active';  ?>">
+                        <i class="nav-icon fas fa-money-bill"></i>
+                        <p>Sell</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link <?php if ($active_page == 'history') echo 'active';  ?>">
+                        <i class="nav-icon fas fa-clock"></i>
+                        <p>History</p>
                     </a>
                 </li>
             </ul>
