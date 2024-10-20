@@ -58,6 +58,19 @@ class Register extends DBconn {
             // Execute login insertion
             $statement_login->execute();
 
+            // Insert into wallet table
+            $default_cash_wallet = DEFAULT_CASH_WALLET;
+
+            $sql_wallet = "INSERT INTO wallet (user_id, cash) 
+                        VALUES (?, ?)"; 
+
+            $statement_wallet = $pdo->prepare($sql_wallet);
+            $statement_wallet->bindValue(1, $user_id);
+            $statement_wallet->bindValue(2, $default_cash_wallet);
+
+            // Execute login insertion
+            $statement_wallet->execute();
+
             // Commit the transaction if both inserts succeed
             $pdo->commit();
 

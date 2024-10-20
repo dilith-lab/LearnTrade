@@ -10,15 +10,16 @@ class CommonContr extends Common
     }
     public function generatePassword($charLen)
     {
-        $common = new Common;
-        $fetch = $common->createPassword($charLen);
-        return $fetch;
+        return $this->commonModel->createPassword($charLen);
     }
 
     public function viewRoles()
     {
-        $common = new Common;
-        $fetch = $common->getRoles();
-        return $fetch;
+        return $this->commonModel->getRoles();
+    }
+
+    public function viewWalletBalance($user_id)
+    {
+        return $this->commonModel->getWalletBalance($user_id);
     }
 }

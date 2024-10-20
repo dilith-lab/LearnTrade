@@ -38,11 +38,20 @@
 
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
-                                    <b>Account Status</b> <a class="float-right">Active</a>
+                                    <b>Account Status</b> <a class="float-right">
+                                        <?php if (isset($_SESSION['account_status']) && $_SESSION['account_status'] == 2): ?>
+                                            Active
+                                        <?php endif; ?>
+                                    </a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Wallet</b> <a class="float-right">
+                                        <?php echo isset($cash_wallet) ? DEFAULT_CURRENCY.$cash_wallet : DEFAULT_CURRENCY."0.00"; ?>
+                                    </a>
                                 </li>
                                 <li class="list-group-item">
                                     <b>Date of Join</b> <a class="float-right"><?php if (isset($_SESSION['created_at']))
-                                                                    echo date_format(new DateTime($_SESSION['created_at']),"d F Y");  ?></a>
+                                                                                    echo date_format(new DateTime($_SESSION['created_at']), "d F Y");  ?></a>
                                 </li>
                             </ul>
                         </div>
@@ -66,13 +75,13 @@
                                         <div class="row">
                                             <label for="inputName" class="col-sm-2 col-form-label">First Name</label>
                                             <div class="form-group col-sm-10">
-                                                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" value="<?php if (isset($_SESSION['first_name'])) echo $_SESSION['first_name'];  ?>">
+                                                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" value="<?php if (isset($_SESSION['first_name'])) echo $_SESSION['first_name'];  ?>" disabled>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <label for="inputName" class="col-sm-2 col-form-label">Last Name</label>
                                             <div class="form-group col-sm-10">
-                                                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" value="<?php if (isset($_SESSION['last_name'])) echo $_SESSION['last_name'];  ?>">
+                                                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" value="<?php if (isset($_SESSION['last_name'])) echo $_SESSION['last_name'];  ?>" disabled>
                                             </div>
                                         </div>
                                         <div class="row">

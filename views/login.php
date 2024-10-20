@@ -28,7 +28,7 @@ function handleLoginSuccess($fetch)
     default:
       return [
         'status_code' => 400,
-        'message' => 'Invalid account status.'
+        'message' => 'Invalid account.'
       ];
   }
 
@@ -80,6 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Set the status code and message for display
   $status_code = $response['status_code'];
   $message = $response['message'];
+} else if (isset($_SESSION['user_id'])) {
+  switch ($_SESSION['account_status']) {
+    case 1:
+      header('location: change-password.php');
+      break;
+    case 2:
+      header('location: index.php');
+  }
 }
 ?>
 

@@ -2,14 +2,20 @@
 # Login required
 include "./includes/auth_check.inc.php";
 include "../models/db.model.php";
-include "../controllers/common.contr.php";
+include "../controllers/wallet.contr.php";
 # Page Information
 $title = "User Profile";
 
-if (isset($_POST['submit'])) {
-    $subjects = $_POST['subject'];
-    foreach ($subjects as $subject) {
-        #echo $subject . "<br>";
+if (isset($_SESSION['user_id'])) {
+
+    $user_id = $_SESSION['user_id'];
+    $walletModel = new Wallet();  // Instantiate the Wallet model
+    $walletContr = new WalletContr($walletModel);  // Pass the model instance to the controller
+
+    $fetch = $walletContr->viewWalletBalance($user_id);
+
+    if($fetch){
+        $cash_wallet = number_format($fetch['cash'], 2);
     }
 }
 ?>

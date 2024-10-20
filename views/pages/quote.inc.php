@@ -29,6 +29,12 @@
                 <h5><i class="icon fas fa-check"></i> Alert!</h5>
                 <?php echo $message; ?>
             </div>
+        <?php else: ?>
+            <div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h5><i class="icon fas fa-exclamation-triangle"></i> Disclaimer!</h5>
+                <?php echo DISCLAIMER; ?>
+            </div>
         <?php endif; ?>
         <div class="container-fluid">
             <div class="row">
@@ -40,7 +46,7 @@
                         <form method="POST" action="quote.php">
                             <div class="card-body mb-5">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Symbol</label>
+                                    <label for="symbol">Symbol</label>
                                     <input type="text" class="form-control" id="symbol" name="symbol" placeholder="Enter CSE Symbol" value="<?php if (isset($symbol)) echo $symbol; ?>">
                                 </div>
                             </div>
@@ -61,12 +67,12 @@
                                     <div class="description-block border-right">
                                         <?php if (isset($change) && $change < 0): ?>
                                             <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i></span>
-                                            <span class="badge badge-danger"><?php echo isset($change) ? $change : "0.00"; ?></span>
-                                            <span class="badge badge-danger"><?php echo isset($changePercentage) ? '(' . $changePercentage . '%)' : "(-0.00%)"; ?></span>
+                                            <span class="badge badge-lg badge-danger"><?php echo isset($change) ? $change : "0.00"; ?></span>
+                                            <span class="badge badge-lg badge-danger"><?php echo isset($changePercentage) ? '(' . $changePercentage . '%)' : "(-0.00%)"; ?></span>
                                         <?php else: ?>
                                             <span class="description-percentage text-success"><i class="fas fa-caret-up"></i></span>
-                                            <span class="badge badge-success"><?php echo isset($change) ? $change : "0.00"; ?></span>
-                                            <span class="badge badge-success"><?php echo isset($changePercentage) ? '(' . $changePercentage . '%)' : "(0.00%)"; ?></span>
+                                            <span class="badge badge-lg badge-success"><?php echo isset($change) ? $change : "0.00"; ?></span>
+                                            <span class="badge badge-lg badge-success"><?php echo isset($changePercentage) ? '(' . $changePercentage . '%)' : "(0.00%)"; ?></span>
                                         <?php endif; ?>
                                         <h1><?php echo isset($last_trade_price) ? $last_trade_price : "0.00"; ?></h1>
                                         <span class="description-text">Last Traded Price (Rs)</span>
